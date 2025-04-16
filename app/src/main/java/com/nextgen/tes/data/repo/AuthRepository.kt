@@ -2,6 +2,7 @@ package com.nextgen.tes.data.repo
 
 import com.nextgen.tes.data.local.AuthDataStore
 import com.nextgen.tes.data.remote.api.ApiService
+import com.nextgen.tes.data.remote.response.login.LoginResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -13,9 +14,9 @@ class AuthRepository @Inject constructor(
     private val apiService: ApiService
 ){
 
-    fun getUserLogin(username: String, password: String) = flow {
+    fun getUserLogin(username: String, password: String): Flow<Result<LoginResponse>> = flow {
         try {
-            val response = apiService.setLogin(username, password)
+            val response = apiService.login(username, password)
             emit(Result.success(response))
         } catch (e: Exception) {
             e.printStackTrace()
