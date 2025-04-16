@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,6 +7,15 @@ plugins {
 //    id("com.google.devtools.ksp")
     alias(libs.plugins.hiltAndroid)
 }
+
+// get and read local properties with safer method
+// hide base url from pushing to github
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+val baseUrl = localProperties.getProperty("BASE_URL") ?: "https://fallback-url.com"
 
 android {
     namespace = "com.nextgen.tes"
@@ -16,6 +27,9 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+
+        // get base url from local.properties
+        buildConfigField("String", "BASE_URL", "\"${baseUrl}\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,7 +50,10 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    buildFeatures.viewBinding = true
+    buildFeatures{
+        viewBinding = true
+        buildConfig = true
+    }
     kapt {
         correctErrorTypes = true
     }
