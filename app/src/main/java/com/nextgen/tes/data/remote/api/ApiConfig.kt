@@ -17,7 +17,7 @@ class ApiConfig {
                 .build()
 
             val retrofit = Retrofit.Builder()
-                .baseUrl("BC.BASE_URL")
+                .baseUrl("https://test-my.dinamikamediakom.id")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
