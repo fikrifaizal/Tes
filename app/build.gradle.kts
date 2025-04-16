@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp")
-//    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
+//    id("com.google.devtools.ksp")
+    alias(libs.plugins.hiltAndroid)
 }
 
 android {
@@ -36,6 +37,9 @@ android {
         jvmTarget = "17"
     }
     buildFeatures.viewBinding = true
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
@@ -47,6 +51,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.recyclerview)
 
 //    Architecture KTX
     implementation(libs.androidx.activity.ktx)
@@ -65,9 +70,9 @@ dependencies {
     implementation (libs.kotlinx.coroutines.android)
 
 //    Dependency Injection
+//    Dagger Hilt cannot use ksp instead kapt
     implementation(libs.hilt.android)
-    implementation(libs.androidx.activity)
-//    ksp(libs.hilt.android.compiler)
+    kapt(libs.hilt.android.compiler)
 
 //    Testing
     testImplementation(libs.junit)
